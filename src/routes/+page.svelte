@@ -14,7 +14,8 @@
 	let chart;
 
 	const ARTICLES_ENDPOINT = '/api/articles';
-
+    const categories = ["Beauty", "Restaurant", "Health", "Retail", "Home", "Other"];
+    
 	const renderChart = () => {
 	if (!chartCanvas || articles.length === 0) return;
 
@@ -138,18 +139,16 @@
 	};
 
 	const editArticle = (article) => {
-		if (!article._id) {
-			console.error('Invalid article passed to editArticle:', article);
-			error = 'Cannot edit: missing article ID';
-			return;
-  		}
-		businessName = article.businessName;
-		businessType = article.businessType;
-		businessRating = article.businessRating
-			? new Date(article.businessRating).toISOString().slice(0, 10)
-			: '';
-		editingId = article._id;
-	};
+        if (!article._id) return;
+        
+        businessName = article.businessName;
+        businessType = article.businessType;
+        
+        // FIX: Remove the Date logic, just use the number
+        businessRating = article.businessRating; 
+        
+        editingId = article._id;
+    };
 
 	const deleteArticle = async (id) => {
 		if (!id) {
@@ -182,10 +181,10 @@
 <div class="min-h-screen bg-slate-50 text-slate-900">
 	<div class="mx-auto max-w-3xl px-4 py-10">
 		<h1 class="text-2xl font-semibold">Admin Portal</h1>
-		<p class="mt-1 text-sm text-slate-600">CRUD for Articles</p>
+		<p class="mt-1 text-sm text-slate-600">CRUD for Durham Businesses</p>
 
 		<div class="mt-6 rounded-lg border bg-white p-4">
-			<h2 class="text-sm font-medium text-slate-700">{editingId ? 'Edit article' : 'Add article'}</h2>
+			<h2 class="text-sm font-medium text-slate-700">{editingId ? 'Edit business' : 'Add business'}</h2>
 			<form class="mt-3" on:submit|preventDefault={submitForm}>
 				<div class="grid gap-3 sm:grid-cols-3">
 					<input
@@ -194,12 +193,16 @@
 						required
 						bind:value={businessName}
 					/>
-					<input
-						class="w-full rounded border px-3 py-2 text-sm"
-						placeholder="Business Type"
-						required
-						bind:value={businessType}
-					/>
+					<select
+                        class="w-full rounded border px-3 py-2 text-sm bg-white"
+                        required
+                        bind:value={businessType}
+                    >
+                        <option value="" disabled selected>Select Business Type</option>
+                        {#each categories as category}
+                            <option value={category}>{category}</option>
+                        {/each}
+                    </select>
 					<input
 						class="w-full rounded border px-3 py-2 text-sm"
 						type="number"
@@ -236,13 +239,13 @@
 
 		<div class="mt-6 rounded-lg border bg-white">
 			<div class="flex items-center justify-between border-b px-4 py-3">
-				<h2 class="text-sm font-medium text-slate-700">Articles</h2>
+				<h2 class="text-sm font-medium text-slate-700">Businesses</h2>
 				<button class="cursor-pointer text-sm text-slate-600" on:click={loadArticles}>Refresh</button>
 			</div>
 			{#if loading}
 				<p class="px-4 py-6 text-sm text-slate-500">Loading...</p>
 			{:else if articles.length === 0}
-				<p class="px-4 py-6 text-sm text-slate-500">No articles yet.</p>
+				<p class="px-4 py-6 text-sm text-slate-500">No businesses yet.</p>
 			{:else}
 				<ul class="divide-y">
 					{#each articles as article}
@@ -273,7 +276,7 @@
 
     <h1 class="text-2xl font-semibold pt-6">Data Visualization</h1>
 		<div class="mt-6 rounded-lg border bg-white p-4">
-			<h2 class="text-sm font-medium text-slate-700">Dates chart</h2>
+			<h2 class="text-sm font-medium text-slate-700">Rating chart</h2>
 			<div class="mt-3 h-64">
 				<canvas bind:this={chartCanvas}></canvas>
 			</div>
