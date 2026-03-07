@@ -12,12 +12,51 @@ This idea originated from work last semester with the black community on Fayette
 
 ## Human-Centered Design Analysis
 
+### This websites can afford to have...
+* Clear Business Information cards that show exactly the business, business type, and rating.
+* Clear access between the admin and home page through a nav bar, with distincit central movement
+* Digestable information in form of a graph of number of businesses relating to the type and a chart demonstrating the data
+* Edits and Deletions to ensure top quality reviews
+* Discoverability as it allows a community perspective on different local business
 
+### This website cannot afford...
+* To change the types of business avaliable to rate as there are set catorgeries to help make the filitering process easier
+* To be just used with self interest but the interest of others to promote black owned businesses
+* Payment as this application should allow community to be built and followed thru.
 
+There will be an intentional constraint in a future interation to limit what a regular guest, business, and executive operater will have access to, ensuring quality information.
+
+### Signifers
+* Filiter options on home page, to tell you exactly what each business is under
+* Star icon used to demonstrate the ratings
+* Button styling, when selected the color changes on the filiters
+* Letter sizes to demonstrate what the headings and descriptions are
+
+### Visual, Spatial, Auditory, or Interactive cues
+* Transition: Smooth transitions between admin and home page
+* Cursor Changes: Pointer cursor on interactive elements, default on static content
+* Business tracker: Graph to indicate how many businesses are in each section
+
+### System Respond to User Input
+The systems responsds to the user by inputting the businesses into the chart and the home databse for viewing by the other guest on the websites. You can tell it works when you see the visual cue of the added business in the chart and see the graph grows. You can also tell if you switch to home and see the visual cue of the total incressing by the local directory tag and the added business sections.
+
+### Feedback Loop
+#### Process:
+
+1. Input: Business name, type, and personal rating from personal experiences
+2. System creates an item with all this given information
+3. System takes information and uses it to fill in chart  and home/ view-only mode for the website.
+4. User is now able to view information through an admin view and a user view (if given that access)
+5. User can filiter through businesses to see everything in databse.
+6. Prompts user to add more businesses to the websites
+
+#### Loop effect:
+More visibility → more real-world engagement → more submissions → even more visibility
 
 ## Installation
 
 You need Node.js to run this project.
+Once the repo is clone you MUST make your own .env file that contains your own MONGODB
 
     # Clone the repo
     git@github.com:larkspurjohn-gif/midtermProj.git
@@ -37,7 +76,7 @@ On the home side, it is a view only simplfied version of the CRUD as it shows yo
 
 ## License
 
-Private
+Public
 
 ## Acknowledgements
 
