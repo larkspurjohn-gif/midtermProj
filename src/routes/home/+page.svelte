@@ -1,38 +1,28 @@
 <script>
     import { onMount } from 'svelte';
-    import Chart from 'chart.js/auto';
 
     let articles = [];
     let loading = true;
     let searchTerm = "";
     let selectedCategory = "All";
-    let ratingFilter = 0;
     
-    // Summary Stats
+    // Summary Stats - Updated to count Businesses
     $: totalBusinesses = articles.length;
-    $: avgRating = articles.length 
-        ? (articles.reduce((acc, curr) => acc + Number(curr.businessRating), 0) / articles.length).toFixed(1) 
-        : 0;
     
-    // Filtered List
+    // Filtered List - Updated to check Name and Description
    $: filteredArticles = articles.filter(item => {
-        const matchesSearch = item.businessName.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesSearch = 
+            item.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            (item.businessDescription && item.businessDescription.toLowerCase().includes(searchTerm.toLowerCase()));
+        
         const matchesCategory = selectedCategory === "All" || item.businessType === selectedCategory;
         
-        // Handle the new "Under 5" logic
-        let matchesRating = true;
-        const rating = Number(item.businessRating);
+        return matchesSearch && matchesCategory;
+    }).reverse(); // Keep newest at the top
 
-        if (ratingFilter === "under5") {
-            matchesRating = rating < 5;
-        } else {
-            matchesRating = rating >= Number(ratingFilter);
-        }
-        
-        return matchesSearch && matchesCategory && matchesRating;
-    });
-
-    $: categories = ["All", ...new Set(articles.map(a => a.businessType))];
+    // Sync categories with the Admin Portal options
+    const staticCategories = ["Beauty", "Restaurant", "Health", "Retail", "Home", "Other"];
+    $: categories = ["All", ...staticCategories];
 
     const loadData = async () => {
         try {
@@ -49,11 +39,11 @@
 </script>
 
 <div class="min-h-screen bg-slate-50 font-sans text-slate-900">
-    <header class=" py-16 text-center text-black">
+    <header class="py-16 text-center text-black">
         <div class="mx-auto max-w-4xl px-4">
-            <h1 class="text-6xl font-semibold ">Explore Durham</h1>
+            <h1 class="text-6xl font-semibold tracking-tight">Explore Durham</h1>
             <p class="mt-4 text-lg text-slate-600">
-                Discover the best local businesses, from cozy cafes to high-tech hubs.
+                Community-driven insights for local favorites.
             </p>
             
             <div class="mt-8 flex justify-center">
@@ -61,8 +51,8 @@
                     <input 
                         type="text" 
                         bind:value={searchTerm}
-                        placeholder="Search for a business..." 
-                        class="w-full rounded-full border py-4 pl-6 pr-12 text-slate-900  focus:ring-2 focus:ring-blue-500"
+                        placeholder="Search name or description..." 
+                        class="w-full rounded-full border border-slate-200 py-4 pl-6 pr-12 text-slate-900 shadow-sm focus:ring-2 focus:ring-blue-500 outline-none"
                     />
                     <span class="absolute right-4 top-4 text-slate-400">🔍</span>
                 </div>
@@ -71,78 +61,80 @@
     </header>
 
     <main class="mx-auto max-w-6xl px-4 py-12">
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-    <div class="flex flex-col sm:flex-row sm:items-center gap-4">
-        <div class="flex items-baseline gap-3">
-            <h2 class="text-2xl font-bold">Local Directory</h2>
-            <span class="text-sm font-medium text-slate-400">
-                {filteredArticles.length} results
-            </span>
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                <div class="flex items-baseline gap-3">
+                    <h2 class="text-2xl font-bold">Local Directory</h2>
+                    <span class="text-sm font-medium text-slate-400">
+                        {filteredArticles.length} businesses
+                    </span>
+                </div>
+            </div>
+            
+            <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                {#each categories as category}
+                    <button 
+                        on:click={() => selectedCategory = category}
+                        class="whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-medium transition-all 
+                        {selectedCategory === category ? 'bg-slate-900 text-white shadow-md' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'}"
+                    >
+                        {category}
+                    </button>
+                {/each}
+            </div>
         </div>
 
-        <select 
-    bind:value={ratingFilter}
-    class="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-medium text-slate-700 focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer"
->
-    <option value="0">Any Rating</option>
-    <option value="9">9+ Stars </option>
-    <option value="8">8+ Stars </option>
-    <option value="7">7+ Stars </option>
-    <option value="5">5+ Stars </option>
-    <option value="under5">Under 5 Stars</option>
-</select>
-    </div>
-    
-    <div class="flex gap-2 overflow-x-auto pb-2">
-        {#each categories as category}
-            <button 
-                on:click={() => selectedCategory = category}
-                class="whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-medium transition-colors 
-                {selectedCategory === category ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}"
-            >
-                {category}
-            </button>
-        {/each}
-    </div>
-</div>
-
-    {#if loading}
-        <div class="flex justify-center py-20">
-            <div class="h-8 w-8 animate-spin rounded-full border-4 border-indigo-500 border-t-transparent"></div>
-        </div>
-    {:else if filteredArticles.length === 0}
-        <div class="text-center py-20 bg-slate-50 rounded-2xl border border-dashed">
-            <p class="text-slate-500">No businesses found matching your criteria.</p>
-        </div>
-    {:else}
-        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {#each filteredArticles as business}
-                <div class="group overflow-hidden rounded-2xl border bg-white transition-all hover:shadow-md">
-                    <div class="p-5">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <span class="text-xs font-semibold uppercase tracking-wider text-blue-500">
+        {#if loading}
+            <div class="flex justify-center py-20">
+                <div class="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
+            </div>
+        {:else if filteredArticles.length === 0}
+            <div class="text-center py-20 bg-white rounded-2xl border border-dashed border-slate-300">
+                <p class="text-slate-500 italic">No businesses match your search.</p>
+            </div>
+        {:else}
+            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {#each filteredArticles as business}
+                    <div class="group flex flex-col overflow-hidden rounded-2xl border bg-white transition-all hover:shadow-lg">
+                        <div class="p-6 flex-grow">
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-2 py-1 rounded">
                                     {business.businessType}
                                 </span>
-                                <h3 class="mt-1 text-xl font-semibold">{business.businessName}</h3>
+                                <div class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                                    💬 {business.feedback?.length || 0}
+                                </div>
                             </div>
-                            <div class="flex items-center rounded-lg bg-amber-50 px-2 py-1 text-amber-700 font-bold border border-amber-100">
-                                ★ {business.businessRating}
-                            </div>
+                            
+                            <h3 class="text-xl font-bold text-slate-900">{business.businessName}</h3>
+                            
+                            <p class="mt-3 text-sm text-slate-500 line-clamp-2 leading-relaxed">
+                                {business.businessDescription || "No description available."}
+                            </p>
                         </div>
                         
-                        <button class="mt-6 w-full rounded-lg bg-slate-50 py-2.5 text-sm font-semibold text-white bg-slate-900 transition-all">
-                            View Details
-                        </button>
+                        <div class="p-6 pt-0">
+                            <a 
+                                href="/directory/{business._id}" 
+                                class="block text-center w-full rounded-xl py-3 text-sm font-bold text-white bg-slate-900 transition-all hover:bg-blue-700 shadow-sm"
+                            >
+                                View Glows & Grows
+                            </a>
+                        </div>
                     </div>
-                </div>
-            {/each}
-        </div>
-    {/if}
-</main>
-
+                {/each}
+            </div>
+        {/if}
+    </main>
 </div>
 
 <style>
-    /* Add any custom animations here if needed */
+    /* Hides scrollbar for category filter on mobile */
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
 </style>

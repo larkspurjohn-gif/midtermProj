@@ -12,12 +12,16 @@ const articleSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
-		businessRating: {
-      type: Number,
+		businessDescription: {
+      type: String,
       required: true,
-      min: 0,
-      max: 10,
-    }
+      trim: true
+    },
+    feedback: [{
+    type: { type: String, enum: ['glow', 'grow'] },
+    text: String,
+    createdAt: { type: Date, default: Date.now }
+    }]
 	},
 	{ timestamps: true }
 );

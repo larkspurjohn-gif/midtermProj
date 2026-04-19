@@ -23,7 +23,7 @@
         width: 100%;
         box-sizing: border-box; /* IMPORTANT: Prevents padding from pushing the nav off-screen */
         
-        padding: 0 40px; /* Adjust this to control the gap from the edges */
+        padding: 0 40px; 
         background-color: #333;
         height: 60px;
     }
