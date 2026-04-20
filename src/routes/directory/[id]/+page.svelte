@@ -68,6 +68,34 @@
 
     $: frequentGlow = getTopPhrase(business, 'glow');
     $: frequentGrow = getTopPhrase(business, 'grow');
+    // Helper to format the business hours for display
+   // Convert "14:30" to "2:30 PM"
+    function toStandardTime(militaryTime) {
+        if (!militaryTime) return "";
+        let [hours, minutes] = militaryTime.split(':').map(Number);
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12; // Convert 0 to 12
+        return `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+    }
+
+    // Helper to format the business hours for display
+    function formatDayHours(dayArray) {
+        if (!dayArray || dayArray.length === 0) return "Closed";
+        return dayArray
+            .map(slot => `${toStandardTime(slot.open)} - ${toStandardTime(slot.close)}`)
+            .join(", ");
+    }
+
+    // Array for consistent ordering when displaying the list
+    const daysOfWeek = [
+        { key: 'monday', label: 'Monday' },
+        { key: 'tuesday', label: 'Tuesday' },
+        { key: 'wednesday', label: 'Wednesday' },
+        { key: 'thursday', label: 'Thursday' },
+        { key: 'friday', label: 'Friday' },
+        { key: 'saturday', label: 'Saturday' },
+        { key: 'sunday', label: 'Sunday' }
+    ];
 </script>
 
 <div class="max-w-4xl mx-auto p-8">
@@ -180,16 +208,43 @@
                 {/each}
             </div>
         {:else}
-            <div class="bg-white p-8 rounded-xl border shadow-sm">
-                <h3 class="text-lg font-bold mb-2">About this Business</h3>
+    <div class="bg-white p-8 rounded-xl border shadow-sm">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h3 class="text-lg font-bold mb-4 text-slate-800">About this Business</h3>
                 <p class="text-slate-600 leading-relaxed">
                     {business.businessDescription || "No description provided."}
                 </p>
-                <div class="mt-6 pt-6 border-t flex flex-wrap gap-4">
-                    <div class="bg-slate-100 px-3 py-1 rounded text-sm text-slate-600">Category: {business.businessType}</div>
-                    <div class="bg-slate-100 px-3 py-1 rounded text-sm text-slate-600">ID: {business._id}</div>
+                
+                <div class="mt-6 space-y-3">
+                    <div class="flex items-center gap-2 text-sm text-slate-600">
+                        <span class="font-semibold text-slate-900">Category:</span> 
+                        {business.businessType}
+                    </div>
+                    <div class="flex items-center gap-2 text-sm text-slate-600">
+                        <span class="font-semibold text-slate-900">Owner:</span> 
+                        {business.businessOwner || "N/A"}
+                    </div>
                 </div>
             </div>
-        {/if}
+
+            <div class="bg-slate-50 p-6 rounded-lg border border-slate-100">
+                <h3 class="text-md font-bold mb-4 text-slate-800 flex items-center gap-2">
+                    🕒 Business Hours
+                </h3>
+                <div class="space-y-2">
+                    {#each daysOfWeek as day}
+                        <div class="flex justify-between text-sm py-1 border-b border-slate-200 last:border-0">
+                            <span class="font-medium text-slate-700">{day.label}</span>
+                            <span class="text-slate-600">
+                                {formatDayHours(business.businessHours?.[day.key])}
+                            </span>
+                        </div>
+                    {/each}
+                </div>
+            </div>
+        </div>
+    </div>
+{/if}
     </div>
 </div>
