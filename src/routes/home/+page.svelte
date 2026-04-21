@@ -5,6 +5,8 @@
     let loading = true;
     let searchTerm = "";
     let selectedCategory = "All";
+    let hoveredCategory = null;
+
     
     // Summary Stats - Updated to count Businesses
     $: totalBusinesses = articles.length;
@@ -13,7 +15,7 @@
    $: filteredArticles = articles.filter(item => {
         const matchesSearch = 
             item.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            (item.businessDescription && item.businessDescription.toLowerCase().includes(searchTerm.toLowerCase()));
+            (item.businessSubtitle && item.businessSubtitle.toLowerCase().includes(searchTerm.toLowerCase()));
         
         const matchesCategory = selectedCategory === "All" || item.businessType === selectedCategory;
         
@@ -36,6 +38,10 @@
     };
 
     onMount(loadData);
+    const categoryColors = {
+    "Beauty": "#f472b6", "Restaurant": "#fb923c", "Health": "#4ade80",
+    "Retail": "#60a5fa", "Home": "#a78bfa", "Other": "#94a3b8"
+    };
 </script>
 
 <div class="min-h-screen bg-slate-50 font-sans text-slate-900">
@@ -73,13 +79,25 @@
             
             <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
                 {#each categories as category}
-                    <button 
-                        on:click={() => selectedCategory = category}
-                        class="whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-medium transition-all 
-                        {selectedCategory === category ? 'bg-slate-900 text-white shadow-md' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'}"
-                    >
-                        {category}
-                    </button>
+                <button 
+                    on:click={() => selectedCategory = category}
+                    on:mouseenter={() => hoveredCategory = category}
+                    on:mouseleave={() => hoveredCategory = null}
+                    class="whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-medium transition-all"
+                    style={selectedCategory === category && category !== 'All'
+                    ? `background-color: ${categoryColors[category]}; color: white;`
+                    : selectedCategory === category && category === 'All'
+                    ? 'background-color: #1e293b; color: white;'
+                    : hoveredCategory === category && category !== 'All'
+                    ? `background-color: ${categoryColors[category]}44; color: ${categoryColors[category]}; border: 1px solid ${categoryColors[category]}44;`
+                    : hoveredCategory === category && category === 'All'
+                    ? 'background-color: #f1f5f9; border: 1px solid #e2e8f0; color: #475569;'
+                    : category !== 'All'
+                    ? `background-color: ${categoryColors[category]}22; color: ${categoryColors[category]}; border: 1px solid ${categoryColors[category]}44;`
+                    : 'background-color: white; border: 1px solid #e2e8f0; color: #475569;'}
+                >
+                    {category}
+                </button>
                 {/each}
             </div>
         </div>
@@ -98,8 +116,11 @@
                     <div class="group flex flex-col overflow-hidden rounded-2xl border bg-white transition-all hover:shadow-lg">
                         <div class="p-6 flex-grow">
                             <div class="flex justify-between items-start mb-3">
-                                <span class="text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-2 py-1 rounded">
-                                    {business.businessType}
+                                <span 
+                                class="text-xs font-bold uppercase tracking-widest px-2 py-1 rounded"
+                                style="background-color: {categoryColors[business.businessType]}22; color: {categoryColors[business.businessType]}"
+                                >
+                                {business.businessType}
                                 </span>
                                 <div class="flex items-center gap-1 text-slate-400 text-xs font-medium">
                                     💬 {business.feedback?.length || 0}
@@ -109,7 +130,7 @@
                             <h3 class="text-xl font-bold text-slate-900">{business.businessName}</h3>
                             
                             <p class="mt-3 text-sm text-slate-500 line-clamp-2 leading-relaxed">
-                                {business.businessDescription || "No description available."}
+                                {business.businessSubtitle || "No description available."}
                             </p>
                         </div>
                         

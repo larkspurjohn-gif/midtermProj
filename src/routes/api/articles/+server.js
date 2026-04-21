@@ -10,7 +10,7 @@ export async function GET() {
 
 export async function POST({ request }) {
 	await connectToDatabase();
-	const { businessName, businessType, businessDescription, businessOwner, businessHours } = await request.json();
-	const article = await Article.create({ businessName, businessType, businessDescription, businessOwner, businessHours});
+	const { businessName, businessType, businessDescription, businessOwner, businessHours, businessSubtitle } = await request.json();
+	const article = await Article.create({ businessName, businessType, businessDescription, businessOwner, businessHours, businessSubtitle});
 	return json(article, { status: 201 });
 }

@@ -22,10 +22,10 @@ export async function GET({ params }) {
 
 export async function PUT({ params, request }) {
 	await connectToDatabase();
-	const { businessName, businessType, businessDescription, businessOwner, businessHours } = await request.json();
+	const { businessName, businessType, businessDescription, businessOwner, businessHours, businessSubtitle } = await request.json();
 	const article = await Article.findByIdAndUpdate(
 		params.id,
-		{ businessName, businessType, businessDescription, businessOwner, businessHours },
+		{ businessName, businessType, businessDescription, businessOwner, businessHours, businessSubtitle },
 		{ returnDocument: 'after', runValidators: true }
 	).lean();
 

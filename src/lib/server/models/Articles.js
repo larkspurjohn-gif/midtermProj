@@ -30,6 +30,11 @@ const articleSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
+    businessSubtitle: {
+      type: String,
+      required: true,
+      trim: true
+    },
     businessOwner: {
       type: String,
       required: true,
