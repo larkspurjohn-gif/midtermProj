@@ -4,31 +4,33 @@ A hub for connecting me (and eventually more people) to Durham businesses of all
 
 ## Project Description
 
- A website that allows people to store and rate local Durham businesses. Utilizing Node.JS and SelevteKit, the system will allow for people to input places they been to, adding it to a larger depository, that will allow users to filter based on the owner of the business (wip), kind of business or the star rating. I vaguely want this to model something in between yelp and wikipedia (as of right now as there’s not enough time to make a full fledge product with login + profiles). This system will also connect to MongoDB for easy access of all information on a public domain.
+ A website that allows people to store and rate local Durham businesses. Utilizing Node.JS and SelevteKit, the system will allow for people to input places they been to, adding it to a larger depository, that will allow users to filter based on the kind of business or search up the business they are looking for. I vaguely want this to model something like yelp but more based on qualitive reviews that promote growth and care within that small business aspect(as of right now as there’s not enough time to make a full fledge login procedure). This system will also connect to MongoDB for easy access of all information on a public domain.
 
 ## Target Audience and Motivation
 
-This idea originated from work last semester with the black community on Fayetteville street in Durham. A lot of these businesses do amazing work but don’t have the platform to get out there and connect with more people outside of Durham or even local colleges. Being a student at Duke I notice that it is a struggle point for us as students to learn more about durham and  a struggle point of the university giving visibility to Durham. I want to provide a way for all of us to be more connected and through this creation, I hope to spark ideas for future involvement with Durham, specifically from big names like Duke. How can we continue to enligten people about the beautiful community around them whilst also pushing forward community? Hopefully with this application the target audience, durham natives and temporary residences, are able to start doing more of both.
+This idea originated from work last semester (Fall 2025) with the black community on Fayetteville street in Durham. A lot of these businesses do amazing work but don’t have the platform to get out there or don't know where to continue with newfound developments. It's hard to start a new business by yourself so bringig the community together to help uplift can be such a strong resource. How can we continue to enligten people about the beautiful community around them whilst also pushing forward community? Hopefully with this application the target audience, durham natives and temporary residences, are able to start doing more of both.
 
 ## Human-Centered Design Analysis
 
 ### This websites can afford to have...
-* Clear Business Information cards that show exactly the business, business type, and rating.
+* Clear Business Information cards that show exactly the business, business type, and amount of comments.
 * Clear access between the admin and home page through a nav bar, with distincit central movement
+* A login page that closes off admin to only one authorized user (as of right now)
 * Digestable information in form of a graph of number of businesses relating to the type and a chart demonstrating the data
-* Edits and Deletions to ensure top quality reviews
+* Edits and Deletions of business to ensure top recent events
+* Community based review improvements through glows and grows that can be utilized
 * Discoverability as it allows a community perspective on different local business
 
 ### This website cannot afford...
 * To change the types of business avaliable to rate as there are set catorgeries to help make the filitering process easier
-* To be just used with self interest but the interest of others to promote black owned businesses
+* To be used in self interest instead of the interest of others to promote black owned businesses
 * Payment as this application should allow community to be built and followed thru.
 
 There will be an intentional constraint in a future interation to limit what a regular guest, business, and executive operater will have access to, ensuring quality information.
 
 ### Signifers
 * Filiter options on home page, to tell you exactly what each business is under
-* Star icon used to demonstrate the ratings
+* Glows and grows used to demonstrate what the business highlights
 * Button styling, when selected the color changes on the filiters
 * Letter sizes to demonstrate what the headings and descriptions are
 
@@ -43,12 +45,13 @@ The systems responsds to the user by inputting the businesses into the chart and
 ### Feedback Loop
 #### Process:
 
-1. Input: Business name, type, and personal rating from personal experiences
+1. Input: Business name, type, owner, hours, and description (short and long)
 2. System creates an item with all this given information
 3. System takes information and uses it to fill in chart  and home/ view-only mode for the website.
 4. User is now able to view information through an admin view and a user view (if given that access)
 5. User can filiter through businesses to see everything in databse.
-6. Prompts user to add more businesses to the websites
+6. Prompts user to add glows and grows to the websites
+7. Users will be able to make a business request of who they would like to see on site
 
 #### Loop effect:
 More visibility → more real-world engagement → more submissions → even more visibility
@@ -72,7 +75,7 @@ Once the repo is clone you MUST make your own .env file that contains your own M
 
 Admin side is used to CRUD (Create, Read, Update, Delete) business information. It features a graph to keep track of how many businesses are under each rating but this might change later on to how many of each what business type as that could be more important to see (maybe having both views would be nice).
 
-On the home side, it is a view only simplfied version of the CRUD as it shows you all the same information but in an easy digestable way for people to see it. This also includes filiter buttons for star ratings and business types so you can see the worse of the worse and best of the best.
+On the home side, it is a view only simplfied version of the CRUD as it shows you all the same information but in an easy digestable way for people to see it. This also includes filiter buttons for business types so you can see the businesses under each catorgery. When you click each business you can leave a glow or grow review or read others. It will showcase the top glow and grow at the top of the page. You can also see the business information when clicking on the tab by reviews.
 
 ## License
 
@@ -87,4 +90,4 @@ Svelte, HTML, CSS, and JavaScript were used in this project.
 
 ## Roadmap
 
-My next steps is make this more accessible for all to use rather than just my self. I would do this through figuring out a domain and making login screens with different access restrictions. I also would love to add more filiter options making it easier to navigate. In future interations their will be more business information as well about each business added. Depending on if this is more blog style or not the non-admin side might allow creation of reviews as well.
+My next steps is make this more accessible for all to use rather than just my self. I would do this through figuring out a domain and making login screens with different access restrictions. I also would love to add an about the owner section to help put spotlight on the owner and how and why they got here. In future interations their will be information added about the business location.
