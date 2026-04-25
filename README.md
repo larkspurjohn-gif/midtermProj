@@ -85,6 +85,7 @@ Public
 
 Thank you to the glourious people that are behind SvelteKit, Node.Js, MongoDB!
 My inspirations for this project came primarly from Yelp and my Notion Board, shoutout to them!
+Also to the black durham community for showing me the beauty that is hidden here.
 
 Svelte, HTML, CSS, and JavaScript were used in this project.
 
