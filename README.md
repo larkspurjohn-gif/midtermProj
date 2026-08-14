@@ -1,10 +1,10 @@
-# Discover Durham
+# Hytai Glow
 
-A hub for connecting me (and eventually more people) to Durham businesses of all kinds!
+A hub for connecting me (and eventually more people) to Black businesses in Durham of all kinds!
 
 ## Project Description
 
- A website that allows people to store and rate local Durham businesses. Utilizing Node.JS and SelevteKit, the system will allow for people to input places they been to, adding it to a larger depository, that will allow users to filter based on the kind of business or search up the business they are looking for. I vaguely want this to model something like yelp but more based on qualitive reviews that promote growth and care within that small business aspect(as of right now as there’s not enough time to make a full fledge login procedure). This system will also connect to MongoDB for easy access of all information on a public domain.
+ A website that allows people to store and rate local black Durham businesses. Utilizing Node.JS and SelevteKit, the system will allow for people to input places they been to, adding it to a larger depository, that will allow users to filter based on the kind of business or search up the business they are looking for. I vaguely want this to model something like yelp but more based on qualitive reviews that promote growth and care within that small business aspect(as of right now as there’s not enough time to make a full fledge login procedure). This system will also connect to MongoDB for Seasy access of all information on a public domain.
 
 ## Target Audience and Motivation
 
@@ -63,7 +63,7 @@ Once the repo is clone you MUST make your own .env file that contains your own M
 
     # Clone the repo
     git@github.com:larkspurjohn-gif/midtermProj.git
-    cd trial-on
+    cd my-midterm
 
     # Install dependencies
     npm install
@@ -73,7 +73,7 @@ Once the repo is clone you MUST make your own .env file that contains your own M
 
 ## Usage
 
-Admin side is used to CRUD (Create, Read, Update, Delete) business information. It features a graph to keep track of how many businesses are under each rating but this might change later on to how many of each what business type as that could be more important to see (maybe having both views would be nice).
+Admin side is used to CRUD (Create, Read, Update, Delete) business information. It features a graph to keep track of how many businesses are under each rating but this might change later on to how many of each what business type as that could be more important to see (maybe having both views would be nice). The log in for admin right noww is as follows: User- admin, Pass-admin123
 
 On the home side, it is a view only simplfied version of the CRUD as it shows you all the same information but in an easy digestable way for people to see it. This also includes filiter buttons for business types so you can see the businesses under each catorgery. When you click each business you can leave a glow or grow review or read others. It will showcase the top glow and grow at the top of the page. You can also see the business information when clicking on the tab by reviews.
 
