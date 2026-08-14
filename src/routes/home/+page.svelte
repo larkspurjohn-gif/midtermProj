@@ -47,7 +47,7 @@
 <div class="min-h-screen bg-slate-50 font-sans text-slate-900">
     <header class="py-16 text-center text-black">
         <div class="mx-auto max-w-4xl px-4">
-            <h1 class="text-6xl font-semibold tracking-tight">Explore Durham</h1>
+            <h1 class="text-6xl font-semibold tracking-tight">Hytai Glow</h1>
             <p class="mt-4 text-lg text-slate-600">
                 Community-driven insights for local favorites.
             </p>
